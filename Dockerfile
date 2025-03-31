@@ -6,10 +6,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile \
-  fi
+COPY package.json package-lock.json  ./
+RUN npm install --only=production
 RUN rm -rf ./.next/cache
 
 # Rebuild the source code only when needed
@@ -17,7 +15,7 @@ FROM base AS builder
 WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY . .
-RUN yarn build
+RUN npm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
