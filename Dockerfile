@@ -14,9 +14,8 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM --platform=linux/amd64 node:20-bullseye-slim
+# 음.. 제발
 WORKDIR /usr/src/app
-
-ENV NODE_ENV=production
 
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/.next/standalone ./
