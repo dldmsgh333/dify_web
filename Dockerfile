@@ -9,4 +9,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["yarn","start"]
+CMD ["node",".next/standalone/server.js"]
