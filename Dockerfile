@@ -1,26 +1,12 @@
-FROM node:19-alpine AS base
+FROM --platform=linux/amd64 node:19-bullseye-slim
 
-FROM base AS builder
-RUN apk add --no-cache libc6-compat
-WORKDIR /usr/src/app
-
-COPY ./package*.json ./
-
-RUN npm install
+WORKDIR /app
 
 COPY . .
 
-RUN npm run build
-
-# Production image, copy all the files and run next
-FROM --platform=linux/amd64 node:20-bullseye-slim
-# 음.. 제발
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app/public ./public
-COPY --from=builder /usr/src/app/.next/standalone ./
-COPY --from=builder /usr/src/app/.next/static ./.next/static
+RUN yarn install
+RUN yarn build
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["yarn","start"]
