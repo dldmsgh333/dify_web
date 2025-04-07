@@ -1,4 +1,20 @@
 /** @type {import('next').NextConfig} */
+
+const allowedOrigins = process.env.IFRAME_WHITELIST_ORIGINS?.split(',').map(o => o.trim()).filter(Boolean)
+
+const frameAncestors =
+  allowedOrigins.length > 0
+    ? `frame-ancestors ${allowedOrigins.join(' ')};`
+    : ''
+
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value:
+    frameAncestors, // 👈 여기서 iframe 허용 도메인 제한
+  },
+]
+
 const nextConfig = {
   productionBrowserSourceMaps: false, // enable browser source map generation during the production build
   // Configure pageExtensions to include md and mdx
@@ -17,6 +33,14 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   output: 'standalone',
+  async headers() {
+    return [
+      {
+        source: '/(.*)', // 모든 경로에 csp 적용
+        headers: securityHeaders,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
