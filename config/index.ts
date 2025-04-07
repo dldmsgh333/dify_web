@@ -2,6 +2,8 @@ import type { AppInfo } from '@/types/app'
 export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
 export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
+export const IFRAME_WHITELIST_ORIGINS = process.env.IFRAME_WHITELIST_ORIGINS?.split(',').map(o => o.trim()).filter(Boolean) || []
+
 export const APP_INFO: AppInfo = {
   title: '내 로컬 유아이가 맞니?',
   description: '',
