@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   const frameAncestors = IFRAME_WHITELIST_ORIGINS.length > 0
     ? `frame-ancestors ${IFRAME_WHITELIST_ORIGINS.join(' ')};`
     : ''
-
+  console.log('origin : ',request.nextUrl.origin);
   response.headers.set('Content-Security-Policy', frameAncestors)
   return response
 }
